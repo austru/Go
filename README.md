@@ -8,21 +8,10 @@
 
 ### Linux
 
-Install CMake
+## Installing Requirements
 ```
-sudo apt install cmake
-```
-Install Make
-```
-sudo apt install make
-```
-Install SDL 2.0
-```
-sudo apt install libsdl2-dev
-```
-Install a C++20 compiler (GCC version 8 and later)
-```
-sudo apt install g++
+sudo apt update
+sudo apt install g++ make cmake libsdl2-dev
 ```
 
 ## Compiling
@@ -33,10 +22,25 @@ cmake ..
 cmake --build .
 ```
 
-### Windows
+### Windows (64-bit)
 MSYS2 provides a Unix-like environment making it easier to install or build software on Windows using the GCC compiler.
 [MSYS2 homepage](https://www.msys2.org/)
 The installer will run a shell once complete. Update packages with `pacman -Syuu`, then upon completion close the shell.
+Using notepad, copy the following script into a new file called `install.sh`:
+```
+#!/bin/bash
+# install.sh
+pacman -S mingw-w64-x86_64-gcc make cmake mingw-w64-x86_64-SDL2 git
+mkdir Go
+cd Go
+git clone git@github.com:austru/Go.git .
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+Start a MSYS2 MinGW x64 shell `C:\msys64\mingw64.exe`.
+Navigate to where you saved the script, then run it with `bash install.sh`.
 
 
 
