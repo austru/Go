@@ -1,26 +1,26 @@
 # Go
 
-### Requirements
+## Requirements
 - CMake v3.10.0
 - Make
 - SDL 2.0
 - C++20 compiler
 
-## Linux
+### Linux
 
-Installing CMake
+Install CMake
 ```
 sudo apt install cmake
 ```
-Installing Make
+Install Make
 ```
 sudo apt install make
 ```
-Installing SDL 2.0
+Install SDL 2.0
 ```
 sudo apt install libsdl2-dev
 ```
-Installing a C++20 compiler (GCC version 8 and later)
+Install a C++20 compiler (GCC version 8 and later)
 ```
 sudo apt install g++
 ```
@@ -33,8 +33,8 @@ cmake ..
 cmake --build .
 ```
 
-## Windows
+### Windows
 Installing CMake
-(https://cmake.org/download/)
+[](https://cmake.org/download/)
 
 
