@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(Go VERSION 0.1.0 LANGUAGES C CXX)
 
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+add_definitions(-std=c++23)
+
 add_executable(Go main.cpp 
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/GoBoard2D.cc
@@ -21,7 +26,3 @@ find_file(SDL2_INCLUDE_DIR REQUIRED NAME SDL.h HINTS SDL2)
 
 target_include_directories(Go PRIVATE "${PROJECT_SOURCE_DIR}/include/")
 target_link_libraries(Go PRIVATE SDL2::SDL2)
-
-include(CTest)
-enable_testing()
-
