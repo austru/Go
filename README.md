@@ -34,7 +34,10 @@ cmake --build .
 ```
 
 ### Windows
-Installing CMake
-[](https://cmake.org/download/)
+MSYS2 provides a Unix-like environment making it easier to install or build software on Windows using the GCC compiler.
+[MSYS2 homepage](https://www.msys2.org/)
+The installer will run a shell once complete. Update packages with `pacman -Syuu`, then upon completion close the shell.
+
+
 
 
