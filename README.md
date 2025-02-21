@@ -24,13 +24,13 @@ cmake --build .
 
 ### Windows (64-bit)
 MSYS2 provides a Unix-like environment making it easier to install or build software on Windows using the GCC compiler.
-Visit [MSYS2 homepage](https://www.msys2.org/) to find more information and installers. 
+Visit the [MSYS2 homepage](https://www.msys2.org/) to find more information and installers.
 The installer will run a shell once complete. Update packages with `pacman -Syuu`, then upon completion close the shell.
 Using notepad, copy the following script into a new file called `install.sh`:
 ```
 #!/bin/bash
 # install.sh
-pacman -S mingw-w64-x86_64-gcc make cmake mingw-w64-x86_64-SDL2 git
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-make mingw-w64-x86_64-cmake mingw-w64-x86_64-SDL2 git
 mkdir Go
 cd Go
 git clone git@github.com:austru/Go.git .
