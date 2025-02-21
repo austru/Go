@@ -6,15 +6,15 @@
 - SDL 2.0
 - C++20 compiler
 
-### Linux
+## Linux
 
-## Installing Requirements
+### Installing Requirements
 ```
 sudo apt update
 sudo apt install g++ make cmake libsdl2-dev
 ```
 
-## Compiling
+### Compiling
 ```
 mkdir build
 cd build
@@ -22,7 +22,7 @@ cmake ..
 cmake --build .
 ```
 
-### Windows (64-bit)
+## Windows (64-bit)
 MSYS2 provides a Unix-like environment making it easier to install or build software on Windows using the GCC compiler.
 Visit the [MSYS2 homepage](https://www.msys2.org/) to find more information and installers.
 The installer will run a shell once complete. Update packages with `pacman -Syuu`, then upon completion close the shell.
@@ -39,6 +39,7 @@ cd build
 cmake ..
 cmake --build .
 ```
+### Compiling
 Start a MSYS2 MinGW x64 shell `C:\msys64\mingw64.exe`.
 Navigate to where you saved the script, then run it with `bash install.sh`.
 
