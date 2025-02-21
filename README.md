@@ -35,7 +35,7 @@ Using notepad, copy the following script into a new file called `install.sh`:
 pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-make mingw-w64-x86_64-cmake mingw-w64-x86_64-SDL2 git
 mkdir Go
 cd Go
-git clone git@github.com:austru/Go.git .
+git clone https://github.com/austru/Go.git .
 mkdir build
 cd build
 cmake ..
