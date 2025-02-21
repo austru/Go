@@ -1,5 +1,7 @@
 # Go
 
+A simple client for playing the game of go.
+
 ## Requirements
 - CMake v3.10.0
 - Make
