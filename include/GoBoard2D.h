@@ -1,3 +1,6 @@
+#ifndef GOBOARD2D_H
+#define GOBOARD2D_H
+
 #include "GoBoard.h"
 #include <SDL.h>
 
@@ -31,3 +34,5 @@ private:
     int windowWidth;
     int windowHeight;
 };
+
+#endif

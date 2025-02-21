@@ -1,4 +1,8 @@
+#ifndef STATE_H
+#define STATE_H
+
 #include "GoBoard.h"
+#include "Group.h"
 #include "IllegalMoveException.h"
 
 class State {
@@ -34,3 +38,5 @@ protected:
     std::set<std::shared_ptr<Group>> groups;
     std::vector<GoBoard> previous;
 };
+
+#endif

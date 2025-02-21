@@ -1,8 +1,8 @@
-#pragma once
+#ifndef GOBOARD_H
+#define GOBOARD_H
 
 #include "Board.h"
-#include "Group.h"
-#include <algorithm>
+#include "Stone.h"
 #include <set>
 
 class GoBoard : public Board<Stone> {
@@ -32,3 +32,5 @@ public:
     void updateState();
     void clearState();
 };
+
+#endif

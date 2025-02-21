@@ -1,4 +1,5 @@
 #include "State.h"
+#include <iostream>
 
 State::State(const GoBoard& board) : board(board) {
     generateGroups();

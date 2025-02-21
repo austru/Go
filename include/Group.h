@@ -1,9 +1,9 @@
-#pragma once
+#ifndef GROUP_H
+#define GROUP_H
 
 #include <set>
-#include <memory>
-#include <algorithm>
 #include <optional>
+#include <algorithm>
 #include "Stone.h"
 
 class Group : public std::enable_shared_from_this<Group> {
@@ -56,4 +56,6 @@ protected:
     int id;
     std::set<std::shared_ptr<Stone>> stones;
 };
+
+#endif
 

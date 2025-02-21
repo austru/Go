@@ -1,6 +1,6 @@
-#pragma once
+#ifndef STONE_H
+#define STONE_H
 
-#include <cassert>
 #include <compare>
 #include <memory>
 
@@ -56,3 +56,5 @@ protected:
     std::size_t position;
     StoneType type;
 };
+
+#endif

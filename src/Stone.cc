@@ -1,5 +1,8 @@
 #include "Stone.h"
+
+#include <cassert>
 #include <iostream>
+
 /* Represents empty; not placed by player */
 Stone::Stone(const std::size_t position) {
     setPosition(position);

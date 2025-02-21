@@ -1,4 +1,5 @@
 #include "Go.h"
+#include <ranges>
 #include <iostream>
 
 Go::Go() : board(std::make_shared<GoBoard>(9, 9)), state(*board) {

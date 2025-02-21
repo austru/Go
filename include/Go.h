@@ -1,7 +1,9 @@
+#ifndef GO_H
+#define GO_H
+
 #include "State.h"
 #include "Player.h"
-#include <ranges>
-
+#include <vector>
 
 class Go {
 
@@ -22,3 +24,5 @@ protected:
     std::shared_ptr<GoBoard> board;
     State state;
 };
+
+#endif

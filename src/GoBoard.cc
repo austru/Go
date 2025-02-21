@@ -1,4 +1,5 @@
 #include "GoBoard.h"
+#include <algorithm>
 #include <iostream>
 
 //GoBoard::GoBoard() : Board<Stone>() {}

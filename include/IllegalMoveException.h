@@ -1,3 +1,6 @@
+#ifndef ILLEGALMOVEEXCEPTION_H
+#define ILLEGALMOVEEXCEPTION_H
+
 #include <stdexcept>
 #include <string>
 
@@ -9,3 +12,5 @@ public:
 private:
     std::string message;
 };
+
+#endif

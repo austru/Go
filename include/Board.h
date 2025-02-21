@@ -1,10 +1,9 @@
-#pragma once
+#ifndef BOARD_H
+#define BOARD_H
 
 #include <vector>
 #include <optional>
 #include <memory>
-
-#include <iostream>
 
 template <typename T>
 class Board {
@@ -61,3 +60,5 @@ protected:
     std::size_t height;
     std::vector<std::shared_ptr<T>> board;
 };
+
+#endif
