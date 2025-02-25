@@ -17,19 +17,22 @@ public:
 
     void init();
     void draw();
+
     std::optional<std::size_t> closestIntersection(int, int);
 
-
 protected:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+    SDL_Window *window;
+    SDL_Renderer *renderer;
     std::shared_ptr<GoBoard> board;
     std::vector<Point> intersections;
 private:
-    double lineWidth;
     double xCoordinateSpacing;
     double yCoordinateSpacing;
-    SDL_Rect* lines;
+
+    std::vector<SDL_Rect> lines;
+
+    SDL_Texture *whiteTexture;
+    SDL_Texture *blackTexture;
 
     int windowWidth;
     int windowHeight;

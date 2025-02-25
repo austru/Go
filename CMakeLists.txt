@@ -1,28 +1,33 @@
 cmake_minimum_required(VERSION 3.10.0)
-project(Go VERSION 0.1.0 LANGUAGES C CXX)
+project(Go VERSION 0.1.1 LANGUAGES C CXX)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-add_definitions(-std=c++23)
+add_definitions(-std=c++20)
 
-add_executable(Go main.cpp 
+include_directories(include)
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/GoBoard2D.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/GoBoard.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/GoUI.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Go.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/IllegalMoveException.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Player.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Piece.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Stone.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Group.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/State.cc
+add_executable(Go main.cpp) 
+
+target_sources(Go PRIVATE
+
+    src/GoBoard2D.cc
+    src/GoBoard.cc
+    src/GoUI.cc
+    src/Go.cc
+    src/IllegalMoveException.cc
+    src/Player.cc
+    src/Piece.cc
+    src/Stone.cc
+    src/Group.cc
+    src/State.cc
     
 )
 
 find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
-find_file(SDL2_INCLUDE_DIR REQUIRED NAME SDL.h HINTS SDL2)
+find_package(SDL2_image REQUIRED)
 
-target_include_directories(Go PRIVATE "${PROJECT_SOURCE_DIR}/include/")
-target_link_libraries(Go PRIVATE SDL2::SDL2)
+target_link_libraries(Go PRIVATE SDL2::SDL2 SDL2_image::SDL2_image)
+
+

@@ -1,5 +1,7 @@
 #include "GoBoard2D.h"
 #include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_render.h>
 #include <iostream>
 
 GoBoard2D::GoBoard2D(std::shared_ptr<GoBoard> board, const int windowWidth, const int windowHeight) /*: board(board)*/
@@ -9,9 +11,27 @@ GoBoard2D::GoBoard2D(std::shared_ptr<GoBoard> board, const int windowWidth, cons
     if (window == nullptr)
         throw std::runtime_error("GoBoard2D could not be created! SDL_Error: " + std::string(SDL_GetError()));
 
+    SDL_SetWindowResizable(window, SDL_TRUE);
+
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == nullptr)
         throw std::runtime_error("Renderer could not be created! SDL_Error: " + std::string(SDL_GetError()));
+
+    SDL_RenderSetLogicalSize(renderer, windowWidth, windowHeight);
+    this->windowHeight = windowHeight;
+    this->windowWidth = windowWidth;
+
+    SDL_Surface *whiteStone = IMG_Load("../resources/whiteStone.png");
+    if (!whiteStone)
+        std::cout<<"white stone not found"<<std::endl;
+    whiteTexture = SDL_CreateTextureFromSurface(renderer, whiteStone);
+    SDL_FreeSurface(whiteStone);
+
+    SDL_Surface *blackStone = IMG_Load("../resources/blackStone.png");
+    if (!blackStone)
+        std::cout<< SDL_GetError() << std::endl;
+    blackTexture = SDL_CreateTextureFromSurface(renderer, blackStone);
+    SDL_FreeSurface(blackStone);
 
     init();
 }
@@ -24,42 +44,58 @@ GoBoard2D::~GoBoard2D()
 }
 
 
-
 void GoBoard2D::init()
 {
-    
     double boardWidth = static_cast<double>(board->getWidth());
     double boardHeight = static_cast<double>(board->getHeight());
 
-    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+    xCoordinateSpacing = static_cast<double>(windowWidth) / boardWidth;
+    yCoordinateSpacing = static_cast<double>(windowHeight) / boardHeight;
 
-    double boardBorder = 25.f;
-    lineWidth = 4.0;
+    const double xBorder = xCoordinateSpacing / 2.f;
+    const double yBorder = yCoordinateSpacing / 2.f;
+
+    const double lineWidth = xBorder / 10.f;
+    const double halfLineWidth = lineWidth / 2.f;
 
 
-    
-    xCoordinateSpacing = ((static_cast<double>(windowWidth) - (2.0)*boardBorder - lineWidth) / (boardWidth-(1.0)));
-    yCoordinateSpacing = ((static_cast<double>(windowHeight) - (2.0)*boardBorder - lineWidth) / (boardHeight-(1.0)));
-
+    intersections.clear();
     for (int i = 0; i < board->getSize(); i++) {
         int x = i % board->getWidth();
         int y = i / board->getHeight();
-        intersections.push_back(Point{
-            boardBorder + lineWidth/2.0 + xCoordinateSpacing*static_cast<double>(x),
-            boardBorder + lineWidth/2.0 + yCoordinateSpacing*static_cast<double>(board->getHeight()-y-1)
-        });
+        intersections.push_back(
+            Point{
+                xBorder + xCoordinateSpacing*static_cast<double>(x),
+                yBorder + yCoordinateSpacing*static_cast<double>(board->getHeight()-y-1)
+            }
+        );
     }
 
-
-    //verticalLineSpacing = xCoordinateSpacing
-    //verticalLineSpacing = ((windowWidth - 2*boardBorder - boardWidth*lineWidth) / (boardWidth - 1)) + lineWidth;
-    //horizontalLineSpacing = ((windowHeight - 2*boardBorder - boardHeight*lineWidth) / (boardHeight - 1)) + lineWidth;
-
-    lines = (SDL_Rect*)malloc((board->getWidth()+board->getHeight())*sizeof(SDL_Rect));
-    for (int x = 0; x < boardWidth; x++)
-        lines[x] = {(int)(x*xCoordinateSpacing+boardBorder), (int)(boardBorder), (int)lineWidth, windowHeight - 2*(int)boardBorder};
-    for (int  y = 0; y < boardHeight; y++)
-        lines[(int)boardWidth + y] = {(int)boardBorder, (int)(y*yCoordinateSpacing+boardBorder), windowWidth - 2*(int)boardBorder, (int)lineWidth};
+    lines.clear();
+    for (int x = 0; x < boardWidth; x++) {
+        double x1 = xBorder + static_cast<double>(x) * xCoordinateSpacing - halfLineWidth;
+        double y1 = yBorder - halfLineWidth;
+        double x2 = lineWidth;
+        double y2 = windowHeight - yCoordinateSpacing + lineWidth;
+        lines.push_back({
+            static_cast<int>(x1),
+            static_cast<int>(y1),
+            static_cast<int>(x2),
+            static_cast<int>(y2)
+        });
+    }
+    for (int  y = 0; y < boardHeight; y++) {
+        double x1 = xBorder - halfLineWidth;
+        double y1 = yBorder + static_cast<double>(y) * yCoordinateSpacing - halfLineWidth;
+        double x2 = windowWidth - xCoordinateSpacing + lineWidth;
+        double y2 = lineWidth;
+        lines.push_back({
+            static_cast<int>(x1),
+            static_cast<int>(y1),
+            static_cast<int>(x2),
+            static_cast<int>(y2)
+        });
+    }
         
 }
 
@@ -71,27 +107,37 @@ void GoBoard2D::draw()
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderFillRects(renderer, lines, (int)(board->getWidth()+board->getHeight()));
+    SDL_RenderFillRects(renderer, lines.data(), (int)(board->getWidth()+board->getHeight()));
+
 
     for (std::size_t i = 0; i < intersections.size(); i++) {
         std::shared_ptr<Stone> s = board->getPieceAt(i).value();
         if (!s->isEmpty()) {
-            SDL_Rect stone = {static_cast<int>(intersections.at(i).x)-10, static_cast<int>(intersections.at(i).y)-10, 20, 20};
+            SDL_Rect stone = {
+                    static_cast<int>(intersections.at(i).x-(xCoordinateSpacing/2.0)),
+                    static_cast<int>(intersections.at(i).y-(yCoordinateSpacing/2.0)),
+                    static_cast<int>(xCoordinateSpacing),
+                    static_cast<int>(yCoordinateSpacing)
+                };
+
             if (s->getId() == 7)
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                SDL_RenderCopy(renderer, blackTexture, NULL, &stone);
+                //SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             else
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            SDL_RenderFillRect(renderer, &stone);
+                SDL_RenderCopy(renderer, whiteTexture, NULL, &stone);
+                //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            
+            //SDL_RenderFillRect(renderer, &stone);
         }
     }
-    //std::cout<<"("<<x<<","<<y<<")"<<std::endl;
 
     SDL_RenderPresent(renderer); //Update screen
 }
 
 std::optional<std::size_t> GoBoard2D::closestIntersection(int x, int y)
 {
-    if (intersections.empty())
+    SDL_RenderGetLogicalSize(renderer, &windowHeight, &windowWidth);
+    if (x < 0 || y < 0 || x >= windowWidth || y >= windowHeight || intersections.empty())
         return std::nullopt;
     int xIndex = (((double)x - (*(intersections.begin())).x + (xCoordinateSpacing/2.0)) / xCoordinateSpacing);
     int yIndex = (((double)y - (*(intersections.end()-1)).y + (yCoordinateSpacing/2.0)) / yCoordinateSpacing);

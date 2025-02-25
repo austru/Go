@@ -24,7 +24,7 @@ int startUI()
         //io_context.run();
     
         GoBoard2D board(g.getBoard(), 800, 800);
-    
+        board.draw();
     
         while (!quit) {
             while (SDL_PollEvent(&event)) {
@@ -32,14 +32,19 @@ int startUI()
                     quit = true;
                 }
                 if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
-                    int x, y;
-                    SDL_GetMouseState(&x, &y);
+                    int x = event.motion.x;
+                    int y = event.motion.y;
                     std::optional<std::size_t> p = board.closestIntersection(x, y);
-                    if (p.has_value())
+                    if (p.has_value()) {
                         g.placeStone(p.value());
+                        board.draw();
+                    }
+                }
+                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    board.draw();
                 }
             }
-            board.draw();
+            //board.draw();
         }
     
         return 0;
